@@ -173,8 +173,12 @@ const app = createApp({
   }
 });
 
-// Mount the Vue app
-app.mount('#app');
+// Mount the Vue app only if #app element exists
+if (document.getElementById('app')) {
+  window.app = app.mount('#app');
+} else {
+  console.log('Vue app not mounted - #app element not found');
+}
 
 // Enhanced jQuery functionality for backward compatibility
 $(document).ready(function() {
