@@ -1,0 +1,29 @@
+{layout 'layout.latte'}
+{varType array $res}
+{block body}
+   <a href="/download">Stáhnout data</a>
+   <hr>
+   <table>
+   {foreach $res as $row}
+      <tr>
+         <td>{$row['id']}</td>
+         <td>{$row['jmeno']|noescape}</td>
+         <td>{$row['prijmeni']|noescape}</td>
+         <td>{$row['datum']|date:'j.n.Y H:i'}</td>
+      </tr>
+   {/foreach}
+   </table>
+
+   <style>
+      .color {
+          background-color: #c91834;
+      }
+   </style>
+   <script>
+       $(document).ready(function() {
+           $('tr').on('click', function() {
+               $(this).toggleClass('color');
+           })
+       });
+   </script>
+{/block}

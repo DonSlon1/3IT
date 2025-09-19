@@ -1,0 +1,22 @@
+services:
+   webserver:
+      container_name: 3it_test_webserver
+      build:
+         context: ./config/docker
+      volumes:
+         - ./:/var/www/html
+      ports:
+         - "8050:80"
+   database:
+      container_name: 3it_test_database
+      image: mariadb
+      restart: always
+      environment:
+         MARIADB_ROOT_PASSWORD: toor
+         MARIADB_DATABASE: 3it-test
+      command: --sql_mode="ALLOW_INVALID_DATES,NO_ZERO_DATE"
+      extra_hosts:
+         - "host.docker.internal:host-gateway"
+         - "mariadb:host-gateway"
+      ports:
+         - "3306:3306"

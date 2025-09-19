@@ -1,0 +1,20 @@
+{
+  "name": "3it/test",
+  "description": "Testovací úloha",
+  "license": "proprietary",
+  "config": {
+    "platform": {
+      "php": "8.4"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "app\\": "app/"
+    }
+  },
+  "require": {
+    "dibi/dibi": "^5.1",
+    "tracy/tracy": "^2.10",
+    "latte/latte": "^3.0"
+  }
+}
