@@ -1,0 +1,160 @@
+// Responsive breakpoints
+@mixin sm {
+  @media (min-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (min-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (min-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (min-width: $breakpoint-xl) {
+    @content;
+  }
+}
+
+// Button variants
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-3 $space-6;
+  border: none;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  cursor: pointer;
+  transition: $transition-base;
+  user-select: none;
+  outline: none;
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@mixin button-primary {
+  @include button-base;
+  background-color: $primary;
+  color: $white;
+
+  &:hover:not(:disabled) {
+    background-color: $primary-dark;
+  }
+}
+
+@mixin button-secondary {
+  @include button-base;
+  background-color: $gray-100;
+  color: $gray-700;
+
+  &:hover:not(:disabled) {
+    background-color: $gray-200;
+  }
+}
+
+// Card component
+@mixin card {
+  background-color: $white;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-base;
+  padding: $space-6;
+}
+
+// Input styles
+@mixin input-base {
+  width: 100%;
+  padding: $space-3 $space-4;
+  border: 1px solid $gray-300;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  transition: $transition-base;
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  }
+
+  &::placeholder {
+    color: $gray-400;
+  }
+}
+
+// Flexbox utilities
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// Loading animation
+@mixin loading-spinner {
+  border: 2px solid $gray-200;
+  border-top: 2px solid $primary;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Table styles
+@mixin table-base {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: $white;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-base;
+
+  th, td {
+    padding: $space-4;
+    text-align: left;
+    border-bottom: 1px solid $gray-200;
+  }
+
+  th {
+    background-color: $gray-50;
+    font-weight: $font-weight-semibold;
+    color: $gray-700;
+  }
+
+  tbody tr {
+    transition: $transition-fast;
+
+    &:hover {
+      background-color: $gray-50;
+    }
+
+    &:last-child td {
+      border-bottom: none;
+    }
+  }
+}

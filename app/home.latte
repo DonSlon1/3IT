@@ -1,154 +1,134 @@
 {layout 'layout.latte'}
+{block title}Domů{/block}
 {block body}
-   <div class="container">
-      <div class="welcome">
-         <h1>Správa záznamů</h1>
-         <p class="lead">Aplikace pro import a správu databázových záznamů</p>
-      </div>
-
-      <div class="features">
-         <div class="feature-card">
-            <div class="feature-icon">📥</div>
-            <h3>Import dat</h3>
-            <p>Stažení dat ze vzdáleného JSON zdroje a jejich uložení do databáze</p>
-            <a href="/download" class="btn btn-primary">Importovat data</a>
-         </div>
-
-         <div class="feature-card">
-            <div class="feature-icon">📊</div>
-            <h3>Zobrazení dat</h3>
-            <p>Strukturované zobrazení všech záznamů s možností řazení</p>
-            <a href="/tabulka" class="btn btn-primary">Zobrazit tabulku</a>
-         </div>
-
-         <div class="feature-card">
-            <div class="feature-icon">🎯</div>
-            <h3>Označování záznamů</h3>
-            <p>Možnost označit libovolné záznamy pro další zpracování</p>
-            <a href="/tabulka" class="btn btn-primary">Označit záznamy</a>
-         </div>
-      </div>
-
-      <div class="info">
-         <h2>Funkce aplikace</h2>
-         <ul>
-            <li>✅ Bezpečný import dat s validací</li>
-            <li>✅ Ochrana proti SQL injection</li>
-            <li>✅ Prevence duplicitních záznamů</li>
-            <li>✅ Interaktivní řazení podle sloupců</li>
-            <li>✅ Perzistentní ukládání označení</li>
-            <li>✅ Responzivní design</li>
-            <li>✅ AJAX operace pro lepší UX</li>
-         </ul>
+   <div class="page-header">
+      <div class="container">
+         <h1>🚀 Profesionální správa záznamů</h1>
+         <p>Moderní aplikace pro import, zobrazení a správu databázových dat</p>
       </div>
    </div>
 
-   <style>
-      body {
-         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-         margin: 0;
-         padding: 20px;
-         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-         min-height: 100vh;
-      }
+   <div class="container">
+      <!-- Quick Stats -->
+      <div class="stats">
+         <div class="stat-card">
+            <div class="stat-value" id="totalRecords">0</div>
+            <div class="stat-label">Celkem záznamů</div>
+         </div>
+         <div class="stat-card">
+            <div class="stat-value" id="markedRecords">0</div>
+            <div class="stat-label">Označeno</div>
+         </div>
+         <div class="stat-card">
+            <div class="stat-value">100%</div>
+            <div class="stat-label">Bezpečnost</div>
+         </div>
+         <div class="stat-card">
+            <div class="stat-value">⚡</div>
+            <div class="stat-label">Rychlost</div>
+         </div>
+      </div>
 
-      .container {
-         max-width: 1200px;
-         margin: 0 auto;
-      }
+      <!-- Main Features -->
+      <div class="features">
+         <div class="feature-card card-hover">
+            <div class="feature-icon">📥</div>
+            <h3>Import dat</h3>
+            <p>Bezpečné stažení dat ze vzdáleného JSON zdroje s automatickou validací a ochranou proti duplicitám</p>
+            <a href="/download" class="btn btn-primary">
+               <span>Importovat data</span>
+               <span>→</span>
+            </a>
+         </div>
 
-      .welcome {
-         text-align: center;
-         color: white;
-         padding: 40px 0;
-      }
+         <div class="feature-card card-hover">
+            <div class="feature-icon">📊</div>
+            <h3>Správa tabulky</h3>
+            <p>Interaktivní zobrazení všech záznamů s pokročilým řazením a filtrováním pro snadnou práci s daty</p>
+            <a href="/tabulka" class="btn btn-primary">
+               <span>Zobrazit tabulku</span>
+               <span>→</span>
+            </a>
+         </div>
 
-      .welcome h1 {
-         font-size: 48px;
-         margin-bottom: 10px;
-         text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-      }
+         <div class="feature-card card-hover">
+            <div class="feature-icon">🎯</div>
+            <h3>Označování a export</h3>
+            <p>Pokročilé označování záznamů s perzistentním ukládáním a možností exportu do různých formátů</p>
+            <a href="/tabulka" class="btn btn-primary">
+               <span>Spravovat záznamy</span>
+               <span>→</span>
+            </a>
+         </div>
+      </div>
 
-      .lead {
-         font-size: 20px;
-         opacity: 0.95;
-      }
+      <!-- Technical Features -->
+      <div class="card">
+         <h2>🛡️ Technické vlastnosti</h2>
+         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+            <div>
+               <h4 style="color: var(--primary); margin-bottom: 0.5rem;">🔒 Bezpečnost</h4>
+               <ul style="list-style: none; padding: 0; margin: 0;">
+                  <li>✅ SQL Injection prevence</li>
+                  <li>✅ XSS ochrana</li>
+                  <li>✅ Validace vstupních dat</li>
+                  <li>✅ Bezpečné session management</li>
+               </ul>
+            </div>
+            <div>
+               <h4 style="color: var(--primary); margin-bottom: 0.5rem;">⚡ Výkon</h4>
+               <ul style="list-style: none; padding: 0; margin: 0;">
+                  <li>✅ Cachování vzdálených dat</li>
+                  <li>✅ Optimalizované databázové dotazy</li>
+                  <li>✅ AJAX pro lepší UX</li>
+                  <li>✅ Responzivní design</li>
+               </ul>
+            </div>
+            <div>
+               <h4 style="color: var(--primary); margin-bottom: 0.5rem;">🚀 Moderní technologie</h4>
+               <ul style="list-style: none; padding: 0; margin: 0;">
+                  <li>✅ PHP 8.1+ s Dibi</li>
+                  <li>✅ Vue.js 3 pro reaktivitu</li>
+                  <li>✅ SCSS pro styling</li>
+                  <li>✅ MariaDB s indexy</li>
+               </ul>
+            </div>
+         </div>
+      </div>
 
-      .features {
-         display: grid;
-         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-         gap: 30px;
-         margin: 40px 0;
-      }
+      <!-- Quick Actions -->
+      <div class="card" style="margin-top: 2rem; text-align: center;">
+         <h3>🎯 Rychlé akce</h3>
+         <div class="actions" style="justify-content: center; margin-top: 1.5rem;">
+            <a href="/download" class="btn btn-primary btn-lg">
+               📥 Importovat nová data
+            </a>
+            <a href="/tabulka" class="btn btn-secondary btn-lg">
+               📊 Zobrazit všechna data
+            </a>
+         </div>
+      </div>
+   </div>
 
-      .feature-card {
-         background: white;
-         padding: 30px;
-         border-radius: 12px;
-         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-         text-align: center;
-         transition: transform 0.3s;
-      }
-
-      .feature-card:hover {
-         transform: translateY(-5px);
-         box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-      }
-
-      .feature-icon {
-         font-size: 48px;
-         margin-bottom: 20px;
-      }
-
-      .feature-card h3 {
-         color: #333;
-         margin-bottom: 15px;
-      }
-
-      .feature-card p {
-         color: #666;
-         margin-bottom: 25px;
-         line-height: 1.6;
-      }
-
-      .btn {
-         display: inline-block;
-         padding: 12px 30px;
-         background-color: #c91834;
-         color: white;
-         text-decoration: none;
-         border-radius: 6px;
-         transition: background-color 0.3s;
-         font-weight: 500;
-      }
-
-      .btn:hover {
-         background-color: #a01228;
-      }
-
-      .info {
-         background: white;
-         padding: 40px;
-         border-radius: 12px;
-         margin-top: 40px;
-         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      }
-
-      .info h2 {
-         color: #333;
-         margin-bottom: 20px;
-      }
-
-      .info ul {
-         list-style: none;
-         padding: 0;
-      }
-
-      .info li {
-         padding: 10px 0;
-         color: #555;
-         font-size: 16px;
-         line-height: 1.6;
-      }
-   </style>
+   <script>
+   // Load real stats when available
+   $(document).ready(function() {
+      // This could fetch real statistics from an API
+      fetch('/api/stats')
+         .then(response => response.json())
+         .then(data => {
+            if (data.total) $('#totalRecords').text(data.total);
+            if (data.marked) $('#markedRecords').text(data.marked);
+         })
+         .catch(() => {
+            // Fallback - try to get stats from other pages if available
+            const stored = localStorage.getItem('appStats');
+            if (stored) {
+               const stats = JSON.parse(stored);
+               $('#totalRecords').text(stats.total || 0);
+               $('#markedRecords').text(stats.marked || 0);
+            }
+         });
+   });
+   </script>
 {/block}

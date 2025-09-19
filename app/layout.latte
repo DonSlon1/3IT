@@ -1,13 +1,40 @@
 <!doctype html>
-<html class="no-js" lang="cs">
+<html lang="cs">
 <head>
    <meta charset="utf-8"/>
    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-   <title>Test | 3IT.cz</title>
+   <title>{block title}Správa záznamů{/block} | 3IT.cz</title>
    <link rel="shortcut icon" href="https://www.3it.cz/favicon.ico" type="image/x-icon">
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+   <link rel="stylesheet" href="/public/css/main.css">
+   <meta name="description" content="Profesionální aplikace pro správu databázových záznamů">
 </head>
-   <body>
-      {block body/}
-   </body>
+<body>
+   <div id="app">
+      <header class="header">
+         <div class="container">
+            <div class="header-content">
+               <a href="/" class="logo">
+                  <div class="logo-icon">3IT</div>
+                  <div class="logo-text">Správa záznamů</div>
+               </a>
+               <nav class="nav">
+                  <a href="/" class="{if $template->getFile() == 'home.latte'}active{/if}">Domů</a>
+                  <a href="/tabulka" class="{if $template->getFile() == 'tabulka.latte'}active{/if}">Tabulka</a>
+                  <a href="/download" class="{if $template->getFile() == 'download.latte'}active{/if}">Import</a>
+               </nav>
+            </div>
+         </div>
+      </header>
+
+      <main>
+         {block body/}
+      </main>
+   </div>
+
+   <!-- Scripts -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <script src="/public/js/app.js"></script>
+</body>
 </html>
