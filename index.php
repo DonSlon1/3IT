@@ -32,5 +32,14 @@ try {
    $app->run();
 } catch (Throwable $e) {
    Debugger::log($e, Debugger::EXCEPTION);
-   app\ErrorHandler::handleException($e);
+
+   // Simple error page if ErrorHandler fails
+   if (class_exists('app\ErrorHandler')) {
+      app\ErrorHandler::handleException($e);
+   } else {
+      echo '<h1>Server Error</h1><p>An error occurred. Please try again later.</p>';
+      if (!Debugger::$productionMode) {
+         echo '<pre>' . $e->getMessage() . '</pre>';
+      }
+   }
 }
