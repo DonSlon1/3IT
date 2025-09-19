@@ -1,55 +1,58 @@
-# Aplikace pro správu záznamů
+# 3IT Test - CRM Records Management System
 
-Webová aplikace pro import, zobrazení a správu databázových záznamů s možností označování.
+Professional PHP application for customer records management with modern development practices.
 
-## Funkce
+## 🚀 Quick Start
 
-- **Import dat** - Stažení dat ze vzdáleného JSON zdroje
-- **Zobrazení dat** - Strukturované zobrazení s řazením
-- **Označování záznamů** - Interaktivní označování s perzistentním ukládáním
-
-## Technologie
-
-- PHP 8.1+
-- MariaDB/MySQL
-- Dibi Database Layer
-- Latte Template Engine
-- jQuery
-- Docker (pro development)
-
-## Instalace
-
-### 1. Naklonování repozitáře
 ```bash
-git clone <repository-url>
-cd 3it-test
+# Make scripts executable
+chmod +x start.sh stop.sh dev.sh
+
+# Start the application
+./start.sh
+
+# Open in browser
+# http://localhost:8050
 ```
 
-### 2. Instalace závislostí
+## 📋 Available Scripts
+
+### Basic Operations
+- `./start.sh` - Start the application with Docker
+- `./stop.sh` - Stop the application
+- `./dev.sh` - Development utility script
+
+### Development Commands
 ```bash
-composer install
+./dev.sh start      # Start application
+./dev.sh stop       # Stop application
+./dev.sh restart    # Restart containers
+./dev.sh logs       # Show live logs
+./dev.sh status     # Show container status
+./dev.sh db         # Connect to database
+./dev.sh import     # Import sample data
+./dev.sh test       # Run functionality tests
+./dev.sh clean      # Clean cache and logs
+./dev.sh help       # Show all commands
 ```
 
-### 3. Databáze
-Vytvořte databázi a spusťte SQL skripty:
-```bash
-mysql -u root -p < create.sql
-mysql -u root -p < migrations.sql
-```
+## 🌐 Application URLs
 
-### 4. Konfigurace
-Upravte připojení k databázi v `DbConfig.php`
+After starting with `./start.sh`:
 
-### 5. Spuštění
-#### Docker
-```bash
-docker-compose up -d
-```
-Aplikace bude dostupná na http://localhost:8080
+- **Home Dashboard**: http://localhost:8050/
+- **Records Table**: http://localhost:8050/tabulka
+- **Data Import**: http://localhost:8050/download
+- **Data Export**: http://localhost:8050/export
+- **API Stats**: http://localhost:8050/api/stats
 
-#### Lokální PHP server
+## 🛠️ Development
+
+### Environment Configuration
+Copy `.env.example` to `.env` and customize if needed:
+
 ```bash
-php -S localhost:8000
+cp .env.example .env
 ```
 
 ## Struktura projektu
