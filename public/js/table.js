@@ -76,6 +76,18 @@ $(document).ready(function() {
                count += response.marked ? 1 : -1;
                counter.text(count);
 
+               // Update percentage
+               const totalCount = parseInt($('#totalCount').text()) || 1;
+               const percentage = Math.round((count / Math.max(totalCount, 1)) * 100);
+               $('#percentageCount').text(percentage + '%');
+
+               // Update localStorage for home page sync
+               const stats = {
+                  total: totalCount,
+                  marked: count
+               };
+               localStorage.setItem('appStats', JSON.stringify(stats));
+
                console.log('Row updated, new marked status:', response.marked);
             } else {
                alert('Error: ' + (response.message || 'Unknown error'));
@@ -120,6 +132,15 @@ $(document).ready(function() {
 
       // Reset counter to 0
       $('#markedCount').text('0');
+      $('#percentageCount').text('0%');
+
+      // Update localStorage
+      const totalCount = parseInt($('#totalCount').text()) || 0;
+      const stats = {
+         total: totalCount,
+         marked: 0
+      };
+      localStorage.setItem('appStats', JSON.stringify(stats));
    });
 
    // Enhanced row interaction with better visual feedback

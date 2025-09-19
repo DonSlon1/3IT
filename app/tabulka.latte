@@ -20,6 +20,17 @@
          <p style="color: var(--gray-600);">Interactive data table with advanced features for record management</p>
       </div>
 
+      <!-- Usage Instructions -->
+      <div class="card" style="margin-bottom: 1.5rem; background-color: var(--primary-light); border-left: 4px solid var(--primary);">
+         <h4 style="margin-top: 0; color: var(--primary-dark);">Usage Instructions</h4>
+         <ul style="margin-bottom: 0; padding-left: 1.5rem; color: var(--gray-700);">
+            <li><strong>Click on any row</strong> to select or deselect it</li>
+            <li><strong>Click on column headers</strong> to sort the data</li>
+            <li><strong>Use export buttons</strong> to download data in CSV or JSON format</li>
+            <li><strong>Selected records</strong> are automatically saved and persist between sessions</li>
+         </ul>
+      </div>
+
       <!-- Statistics Cards -->
       <div class="stats">
          <div class="stat-card">
@@ -31,7 +42,7 @@
             <div class="stat-label">Označeno</div>
          </div>
          <div class="stat-card">
-            <div class="stat-value">{round(($markedCount / max($totalCount, 1)) * 100)}%</div>
+            <div class="stat-value" id="percentageCount">{round(($markedCount / max($totalCount, 1)) * 100)}%</div>
             <div class="stat-label">Označeno (%)</div>
          </div>
          <div class="stat-card">

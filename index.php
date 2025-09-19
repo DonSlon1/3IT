@@ -14,6 +14,12 @@ require_once 'app/ErrorHandler.php';
 
 $urlPath = trim(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH), '/');
 
+// Handle API routes
+if (strpos($urlPath, 'api/') === 0) {
+   require_once 'app/Api.php';
+   exit;
+}
+
 // Default to Home page
 if (empty($urlPath)) {
    $className = 'app\Home';

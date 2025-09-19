@@ -105,24 +105,53 @@
    </div>
 
    <script>
-   // Load real stats when available
-   $(document).ready(function() {
-      // This could fetch real statistics from an API
+   // Load real stats - try multiple approaches for compatibility
+   function updateStats() {
+      console.log('Home page: Loading stats from API...');
+
+      // Fetch real statistics from API
       fetch('/api/stats')
          .then(response => response.json())
          .then(data => {
-            if (data.total) $('#totalRecords').text(data.total);
-            if (data.marked) $('#markedRecords').text(data.marked);
+            console.log('Home page: API response:', data);
+            if (data.success) {
+               document.getElementById('totalRecords').textContent = data.total || 0;
+               document.getElementById('markedRecords').textContent = data.marked || 0;
+               console.log('Home page: Updated DOM with total:', data.total, 'marked:', data.marked);
+
+               // Store updated stats in localStorage for consistency
+               localStorage.setItem('appStats', JSON.stringify({
+                  total: data.total || 0,
+                  marked: data.marked || 0
+               }));
+            }
          })
-         .catch(() => {
-            // Fallback - try to get stats from other pages if available
+         .catch(error => {
+            console.log('Home page: API error, using localStorage fallback:', error);
+            // Fallback - try to get stats from localStorage if API fails
             const stored = localStorage.getItem('appStats');
             if (stored) {
-               const stats = JSON.parse(stored);
-               $('#totalRecords').text(stats.total || 0);
-               $('#markedRecords').text(stats.marked || 0);
+               try {
+                  const stats = JSON.parse(stored);
+                  document.getElementById('totalRecords').textContent = stats.total || 0;
+                  document.getElementById('markedRecords').textContent = stats.marked || 0;
+                  console.log('Home page: Used localStorage:', stats);
+               } catch (e) {
+                  console.log('Home page: localStorage parse error:', e);
+               }
             }
          });
-   });
+   }
+
+   // Try multiple ways to ensure the function runs
+   if (typeof $ !== 'undefined') {
+      $(document).ready(updateStats);
+   } else {
+      if (document.readyState === 'loading') {
+         document.addEventListener('DOMContentLoaded', updateStats);
+      } else {
+         updateStats();
+      }
+   }
    </script>
 {/block}
