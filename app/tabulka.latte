@@ -3,6 +3,8 @@
 {varType string $orderBy}
 {varType string $direction}
 {varType ?string $successMessage}
+{varType int $totalCount}
+{varType int $markedCount}
 {block body}
    <div class="container">
       {if $successMessage}
@@ -11,8 +13,16 @@
          </div>
       {/if}
 
-      <div class="actions">
-         <a href="/download" class="btn btn-primary">Stáhnout data</a>
+      <div class="header">
+         <div class="actions">
+            <a href="/download" class="btn btn-primary">Stáhnout data</a>
+            <button class="btn btn-secondary" id="clearMarks">Vymazat označení</button>
+         </div>
+         <div class="stats">
+            <span>Celkem záznamů: <strong>{$totalCount}</strong></span>
+            <span class="separator">|</span>
+            <span>Označeno: <strong id="markedCount">{$markedCount}</strong></span>
+         </div>
       </div>
 
       <table class="data-table">
@@ -42,7 +52,7 @@
          </thead>
          <tbody>
          {foreach $res as $row}
-            <tr data-id="{$row['id']}">
+            <tr data-id="{$row['id']}" class="{$row['is_marked'] ? 'marked' : ''}">
                <td>{$row['id']}</td>
                <td>{$row['jmeno']}</td>
                <td>{$row['prijmeni']}</td>
@@ -83,8 +93,34 @@
          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       }
 
-      .actions {
+      .header {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
          margin-bottom: 20px;
+         flex-wrap: wrap;
+         gap: 15px;
+      }
+
+      .actions {
+         display: flex;
+         gap: 10px;
+      }
+
+      .stats {
+         display: flex;
+         gap: 10px;
+         align-items: center;
+         font-size: 14px;
+         color: #666;
+      }
+
+      .stats strong {
+         color: #333;
+      }
+
+      .separator {
+         color: #ccc;
       }
 
       .btn {
@@ -99,6 +135,14 @@
 
       .btn:hover {
          background-color: #a01228;
+      }
+
+      .btn-secondary {
+         background-color: #6c757d;
+      }
+
+      .btn-secondary:hover {
+         background-color: #5a6268;
       }
 
       .data-table {
@@ -148,27 +192,66 @@
 
    <script>
        $(document).ready(function() {
-           const markedRows = JSON.parse(localStorage.getItem('markedRows') || '[]');
+           let markedCount = {$markedCount};
 
-           markedRows.forEach(function(id) {
-               $('tr[data-id="' + id + '"]').addClass('marked');
+           // Handle row clicking for marking
+           $('tbody tr').on('click', function() {
+               const $row = $(this);
+               const rowId = $row.data('id');
+               const isMarked = $row.hasClass('marked');
+
+               // Send AJAX request
+               $.ajax({
+                   url: '/mark',
+                   method: 'POST',
+                   contentType: 'application/json',
+                   data: JSON.stringify({
+                       id: rowId,
+                       marked: !isMarked
+                   }),
+                   success: function(response) {
+                       if (response.success) {
+                           $row.toggleClass('marked');
+                           if (response.marked) {
+                               markedCount++;
+                           } else {
+                               markedCount--;
+                           }
+                           $('#markedCount').text(markedCount);
+                       }
+                   },
+                   error: function() {
+                       alert('Chyba při označování záznamu');
+                   }
+               });
            });
 
-           $('tbody tr').on('click', function() {
-               const rowId = $(this).data('id');
-               $(this).toggleClass('marked');
-
-               let marks = JSON.parse(localStorage.getItem('markedRows') || '[]');
-
-               if ($(this).hasClass('marked')) {
-                   if (!marks.includes(rowId)) {
-                       marks.push(rowId);
-                   }
-               } else {
-                   marks = marks.filter(id => id !== rowId);
+           // Handle clear marks button
+           $('#clearMarks').on('click', function() {
+               if (!confirm('Opravdu chcete zrušit všechna označení?')) {
+                   return;
                }
 
-               localStorage.setItem('markedRows', JSON.stringify(marks));
+               $('tbody tr.marked').each(function() {
+                   const $row = $(this);
+                   const rowId = $row.data('id');
+
+                   $.ajax({
+                       url: '/mark',
+                       method: 'POST',
+                       contentType: 'application/json',
+                       data: JSON.stringify({
+                           id: rowId,
+                           marked: false
+                       }),
+                       success: function() {
+                           $row.removeClass('marked');
+                       }
+                   });
+               });
+
+               markedCount = 0;
+               $('#markedCount').text(markedCount);
            });
        });
    </script>
