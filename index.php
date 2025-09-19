@@ -22,5 +22,6 @@ $app = new $className();
 try {
    $app->run();
 } catch (Throwable $e) {
-   bdump($e->getMessage());
+   Debugger::log($e, Debugger::EXCEPTION);
+   app\ErrorHandler::handleException($e);
 }
