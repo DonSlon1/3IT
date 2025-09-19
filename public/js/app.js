@@ -178,68 +178,8 @@ app.mount('#app');
 
 // Enhanced jQuery functionality for backward compatibility
 $(document).ready(function() {
-  // Enhanced table row clicking with Vue integration
-  $('tbody tr').on('click', function() {
-    const $row = $(this);
-    const rowId = parseInt($row.data('id'));
-    const isMarked = $row.hasClass('row-marked');
-
-    // Use Vue method if available
-    if (window.Vue && app) {
-      app.markRecord(rowId, !isMarked)
-        .then(() => {
-          $row.toggleClass('row-marked');
-          updateStatusBadge($row, !isMarked);
-        })
-        .catch(() => {
-          // Handle error - Vue will show notification
-        });
-    } else {
-      // Fallback to jQuery AJAX
-      $.ajax({
-        url: '/mark',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({
-          id: rowId,
-          marked: !isMarked
-        }),
-        success: function(response) {
-          if (response.success) {
-            $row.toggleClass('row-marked');
-            updateStatusBadge($row, response.marked);
-
-            // Update counter
-            const counter = $('#markedCount');
-            let count = parseInt(counter.text()) || 0;
-            count += response.marked ? 1 : -1;
-            counter.text(count);
-          }
-        },
-        error: function() {
-          alert('Error marking record');
-        }
-      });
-    }
-  });
-
-  // Enhanced sorting with loading states
-  $('.sortable').on('click', function() {
-    const $this = $(this);
-    const column = $this.data('column');
-    const currentDir = $this.data('direction') || 'desc';
-    const newDir = currentDir === 'asc' ? 'desc' : 'asc';
-
-    // Show loading
-    $this.addClass('loading');
-
-    // Navigate with new sort parameters
-    const url = new URL(window.location);
-    url.searchParams.set('order', column);
-    url.searchParams.set('dir', newDir);
-
-    window.location.href = url.toString();
-  });
+  // Note: Row clicking functionality is now handled in individual page scripts
+  // to avoid conflicts
 
   // Smooth transitions for better UX
   $('tr').hover(

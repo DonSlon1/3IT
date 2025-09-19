@@ -277,11 +277,12 @@ body {
 }
 
 .data-table .row-marked {
-  background-color: rgba(59, 130, 246, 0.1) !important;
+  background-color: rgba(31, 78, 121, 0.15) !important;
+  border-left: 3px solid var(--primary) !important;
 }
 
 .data-table .row-marked:hover {
-  background-color: rgba(59, 130, 246, 0.15) !important;
+  background-color: rgba(31, 78, 121, 0.25) !important;
 }
 
 /* Alerts */
