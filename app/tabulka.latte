@@ -16,8 +16,8 @@
 
       <!-- Page Header -->
       <div style="margin: 2rem 0;">
-         <h1 style="margin-bottom: 0.5rem;">📊 Správa záznamů</h1>
-         <p style="color: var(--gray-600);">Interaktivní tabulka s pokročilými funkcemi pro správu dat</p>
+         <h1 style="margin-bottom: 0.5rem;">Records Management</h1>
+         <p style="color: var(--gray-600);">Interactive data table with advanced features for record management</p>
       </div>
 
       <!-- Statistics Cards -->
@@ -35,8 +35,8 @@
             <div class="stat-label">Označeno (%)</div>
          </div>
          <div class="stat-card">
-            <div class="stat-value">🎯</div>
-            <div class="stat-label">Aktivní</div>
+            <div class="stat-value">Active</div>
+            <div class="stat-label">Status</div>
          </div>
       </div>
 
@@ -44,17 +44,17 @@
       <div class="actions-header">
          <div class="actions">
             <a href="/download" class="btn btn-primary">
-               📥 Importovat data
+               Import Data
             </a>
             <button class="btn btn-secondary" id="clearMarks" v-on:click="clearAllMarks()">
-               🗑️ Vymazat označení
+               Clear Selection
             </button>
             <div class="btn-group">
                <button class="btn btn-success btn-sm" onclick="exportData('csv')">
-                  💾 Exportovat CSV
+                  Export CSV
                </button>
                <button class="btn btn-success btn-sm" onclick="exportData('json')">
-                  💾 Exportovat JSON
+                  Export JSON
                </button>
             </div>
          </div>
@@ -72,30 +72,30 @@
                <tr>
                   <th class="sortable {$orderBy === 'id' ? 'active' : ''}" data-column="id">
                      <a href="?order=id&dir={$orderBy === 'id' && $direction === 'ASC' ? 'DESC' : 'ASC'}" style="text-decoration: none; color: inherit; display: flex; align-items: center; justify-content: space-between;">
-                        <span>🔗 ID</span>
+                        <span>ID</span>
                         <span class="sort-icon">{if $orderBy === 'id'}{$direction === 'ASC' ? '↑' : '↓'}{else}↕{/if}</span>
                      </a>
                   </th>
                   <th class="sortable {$orderBy === 'jmeno' ? 'active' : ''}" data-column="jmeno">
                      <a href="?order=jmeno&dir={$orderBy === 'jmeno' && $direction === 'ASC' ? 'DESC' : 'ASC'}" style="text-decoration: none; color: inherit; display: flex; align-items: center; justify-content: space-between;">
-                        <span>👤 Jméno</span>
+                        <span>First Name</span>
                         <span class="sort-icon">{if $orderBy === 'jmeno'}{$direction === 'ASC' ? '↑' : '↓'}{else}↕{/if}</span>
                      </a>
                   </th>
                   <th class="sortable {$orderBy === 'prijmeni' ? 'active' : ''}" data-column="prijmeni">
                      <a href="?order=prijmeni&dir={$orderBy === 'prijmeni' && $direction === 'ASC' ? 'DESC' : 'ASC'}" style="text-decoration: none; color: inherit; display: flex; align-items: center; justify-content: space-between;">
-                        <span>📛 Příjmení</span>
+                        <span>Last Name</span>
                         <span class="sort-icon">{if $orderBy === 'prijmeni'}{$direction === 'ASC' ? '↑' : '↓'}{else}↕{/if}</span>
                      </a>
                   </th>
                   <th class="sortable {$orderBy === 'datum' ? 'active' : ''}" data-column="datum">
                      <a href="?order=datum&dir={$orderBy === 'datum' && $direction === 'ASC' ? 'DESC' : 'ASC'}" style="text-decoration: none; color: inherit; display: flex; align-items: center; justify-content: space-between;">
-                        <span>📅 Datum</span>
+                        <span>Date</span>
                         <span class="sort-icon">{if $orderBy === 'datum'}{$direction === 'ASC' ? '↑' : '↓'}{else}↕{/if}</span>
                      </a>
                   </th>
-                  <th style="width: 80px; text-align: center;">
-                     <span>🎯 Status</span>
+                  <th style="width: 100px; text-align: center;">
+                     <span>Status</span>
                   </th>
                </tr>
             </thead>
@@ -114,9 +114,9 @@
                   </td>
                   <td style="text-align: center;">
                      {if $row['is_marked']}
-                        <span style="color: var(--primary); font-size: 1.2em;" title="Označeno">✅</span>
+                        <span class="badge badge-success" title="Selected">SELECTED</span>
                      {else}
-                        <span style="color: var(--gray-300); font-size: 1.2em;" title="Neoznačeno">⭕</span>
+                        <span class="badge badge-secondary" title="Not selected">NORMAL</span>
                      {/if}
                   </td>
                </tr>
@@ -124,9 +124,8 @@
             {if count($res) === 0}
                <tr>
                   <td colspan="5" style="text-align: center; padding: 3rem; color: var(--gray-500);">
-                     <div style="font-size: 3rem; margin-bottom: 1rem;">📭</div>
-                     <strong>Žádná data k zobrazení</strong><br>
-                     <em>Importujte data pomocí tlačítka "Importovat data"</em>
+                     <strong>No data available</strong><br>
+                     <em>Import data using the "Import Data" button</em>
                   </td>
                </tr>
             {/if}
@@ -136,12 +135,12 @@
 
       <!-- Help Text -->
       <div class="card" style="margin-top: 1.5rem; background-color: var(--gray-50); border-left: 4px solid var(--info);">
-         <h4 style="margin-top: 0; color: var(--info);">💡 Nápověda</h4>
+         <h4 style="margin-top: 0; color: var(--info);">Usage Instructions</h4>
          <ul style="margin-bottom: 0; padding-left: 1.5rem;">
-            <li><strong>Kliknutím na řádek</strong> ho označíte nebo zrušíte označení</li>
-            <li><strong>Kliknutím na záhlaví sloupce</strong> data seřadíte</li>
-            <li><strong>Použijte export tlačítka</strong> pro stažení dat v CSV nebo JSON formátu</li>
-            <li><strong>Označená data</strong> se automaticky ukládají a zůstávají mezi relacemi</li>
+            <li><strong>Click on any row</strong> to select or deselect it</li>
+            <li><strong>Click on column headers</strong> to sort the data</li>
+            <li><strong>Use export buttons</strong> to download data in CSV or JSON format</li>
+            <li><strong>Selected records</strong> are automatically saved and persist between sessions</li>
          </ul>
       </div>
    </div>
