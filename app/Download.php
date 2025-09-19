@@ -10,19 +10,32 @@ class Download
    public function run(){
       try {
          $url = "https://test.3it.cz/data/json";
-         $context = stream_context_create([
-            'http' => [
-               'timeout' => 10,
-            ]
-         ]);
 
-         $content = @file_get_contents($url, false, $context);
+         // Try to get from cache first (5 minute cache)
+         $cacheKey = 'json_data_' . md5($url);
+         $data = Cache::get($cacheKey);
 
-         if ($content === false) {
-            throw new \Exception("Nepodařilo se stáhnout data ze vzdáleného zdroje");
+         if ($data === null) {
+            $context = stream_context_create([
+               'http' => [
+                  'timeout' => 10,
+                  'user_agent' => 'PHP Test Application/1.0'
+               ]
+            ]);
+
+            $content = @file_get_contents($url, false, $context);
+
+            if ($content === false) {
+               throw new \Exception("Nepodařilo se stáhnout data ze vzdáleného zdroje");
+            }
+
+            $data = json_decode($content, true);
+
+            // Cache for 5 minutes
+            if ($data && is_array($data)) {
+               Cache::set($cacheKey, $data, 300);
+            }
          }
-
-         $data = json_decode($content, true);
 
          if (!$data || !is_array($data)) {
             throw new \Exception("Neplatný formát dat");

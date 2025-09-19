@@ -1,2 +1,6 @@
 /vendor/
 /.idea/
+/zeta/cache/*.cache
+.env
+*.log
+.DS_Store
