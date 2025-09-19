@@ -12,14 +12,34 @@ class Download
       $content = file_get_contents($url);
       $data = json_decode($content, true);
 
+      if (!$data) {
+         throw new \Exception("Failed to fetch or parse JSON data");
+      }
+
       DbConfig::getDbConnection();
 
-      foreach($data as $item){
-         dibi::query("INSERT INTO `zaznamy` (`jmeno`, `prijmeni`, `datum`) VALUES ('{$item['jmeno']}', '{$item['prijmeni']}', '{$item['date']}')");
+      dibi::begin();
+      try {
+         foreach($data as $item){
+            dibi::query("INSERT INTO `zaznamy`", [
+               'jmeno' => $item['jmeno'] ?? '',
+               'prijmeni' => $item['prijmeni'] ?? '',
+               'datum' => $item['date'] ?? null
+            ], "ON DUPLICATE KEY UPDATE", [
+               'jmeno' => $item['jmeno'] ?? '',
+               'prijmeni' => $item['prijmeni'] ?? '',
+               'datum' => $item['date'] ?? null
+            ]);
+         }
+         dibi::commit();
+      } catch (\Exception $e) {
+         dibi::rollback();
+         throw $e;
       }
 
       $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
       header("Location: " . $protocol . $_SERVER['HTTP_HOST']);
+      exit;
    }
 }
 
