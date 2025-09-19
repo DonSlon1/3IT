@@ -4,6 +4,8 @@ use DbConfig;
 use dibi;
 use Latte;
 
+require_once __DIR__ . '/ErrorHandler.php';
+
 class Tabulka
    implements App
 {

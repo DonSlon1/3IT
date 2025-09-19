@@ -10,12 +10,13 @@ Debugger::enable(Debugger::Production, __DIR__ .'/zeta/logs/');
 
 require_once 'DbConfig.php';
 require_once 'Latte.php';
+require_once 'app/ErrorHandler.php';
 
 $urlPath = trim(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH), '/');
 
 // Default to Home page
 if (empty($urlPath)) {
-   $className = app\Home::class;
+   $className = 'app\Home';
 } else {
    $className = 'app\\' . ucfirst($urlPath);
 }
@@ -23,7 +24,7 @@ if (empty($urlPath)) {
 // Validate class exists and implements App interface
 if (!class_exists($className) || !is_a($className, App::class, true)) {
    // Fall back to Home for invalid routes
-   $className = app\Home::class;
+   $className = 'app\Home';
 }
 
 $app = new $className();

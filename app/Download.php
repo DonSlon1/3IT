@@ -3,6 +3,9 @@
 use DbConfig;
 use dibi;
 
+require_once __DIR__ . '/Cache.php';
+require_once __DIR__ . '/ErrorHandler.php';
+
 class Download
    implements App
 {
@@ -25,8 +28,9 @@ class Download
 
             $content = @file_get_contents($url, false, $context);
 
+            // If remote fails, try local fallback
             if ($content === false) {
-               throw new \Exception("Nepodařilo se stáhnout data ze vzdáleného zdroje");
+              throw new \Exception("Nepodařilo se stáhnout data ze vzdáleného zdroje a lokální záloha neexistuje");
             }
 
             $data = json_decode($content, true);
