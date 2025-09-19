@@ -1,10 +1,5 @@
 <?php namespace app;
 
-use DbConfig;
-use dibi;
-use Latte;
-
-require_once __DIR__ . '/ErrorHandler.php';
 
 class Tabulka
    implements App
@@ -29,7 +24,7 @@ class Tabulka
          }
 
          // Get records with marking info
-         $res = dibi::query('
+         $res = \dibi::query('
             SELECT z.*,
                    IF(m.id IS NOT NULL, 1, 0) as is_marked
             FROM `zaznamy` z
@@ -41,8 +36,8 @@ class Tabulka
          )->fetchAll();
 
          // Get total count
-         $totalCount = dibi::query('SELECT COUNT(*) FROM `zaznamy`')->fetchSingle();
-         $markedCount = dibi::query('
+         $totalCount = \dibi::query('SELECT COUNT(*) FROM `zaznamy`')->fetchSingle();
+         $markedCount = \dibi::query('
             SELECT COUNT(DISTINCT zaznam_id)
             FROM `marked_records`
             WHERE session_id = %s', $sessionId)->fetchSingle();

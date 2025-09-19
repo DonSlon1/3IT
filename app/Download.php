@@ -1,13 +1,7 @@
 <?php namespace app;
 
-use DbConfig;
-use dibi;
 
-require_once __DIR__ . '/Cache.php';
-require_once __DIR__ . '/ErrorHandler.php';
-
-class Download
-   implements App
+class Download implements App
 {
 
    public function run(){
@@ -28,9 +22,8 @@ class Download
 
             $content = @file_get_contents($url, false, $context);
 
-            // If remote fails, try local fallback
             if ($content === false) {
-              throw new \Exception("Nepodařilo se stáhnout data ze vzdáleného zdroje a lokální záloha neexistuje");
+               throw new \Exception("Nepodařilo se stáhnout data ze vzdáleného zdroje");
             }
 
             $data = json_decode($content, true);
@@ -50,23 +43,23 @@ class Download
          $imported = 0;
          $updated = 0;
 
-         dibi::begin();
+         \dibi::begin();
          try {
             foreach($data as $item){
                if (!isset($item['jmeno']) || !isset($item['prijmeni'])) {
                   continue;
                }
 
-               $exists = dibi::query('SELECT id FROM `zaznamy` WHERE jmeno = %s AND prijmeni = %s',
+               $exists = \dibi::query('SELECT id FROM `zaznamy` WHERE jmeno = %s AND prijmeni = %s',
                   $item['jmeno'], $item['prijmeni'])->fetch();
 
                if ($exists) {
-                  dibi::query('UPDATE `zaznamy` SET', [
+                  \dibi::query('UPDATE `zaznamy` SET', [
                      'datum' => $item['date'] ?? null
                   ], 'WHERE id = %i', $exists['id']);
                   $updated++;
                } else {
-                  dibi::query('INSERT INTO `zaznamy`', [
+                  \dibi::query('INSERT INTO `zaznamy`', [
                      'jmeno' => $item['jmeno'],
                      'prijmeni' => $item['prijmeni'],
                      'datum' => $item['date'] ?? null
@@ -74,9 +67,9 @@ class Download
                   $imported++;
                }
             }
-            dibi::commit();
+            \dibi::commit();
          } catch (\Exception $e) {
-            dibi::rollback();
+            \dibi::rollback();
             throw $e;
          }
 

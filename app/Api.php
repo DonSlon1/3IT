@@ -1,52 +1,79 @@
 <?php
 
-require_once __DIR__ . '/../DbConfig.php';
-session_start();
+declare(strict_types=1);
 
-// Set JSON header
-header('Content-Type: application/json');
+namespace app;
 
-// Get database connection
-$db = DbConfig::getDbConnection();
+use Exception;
 
-// Get the requested action from URL
-$path = $_SERVER['REQUEST_URI'];
-$pathParts = explode('/', trim($path, '/'));
+/**
+ * REST API handler for statistics and data operations
+ *
+ * Provides JSON-based API endpoints for retrieving application statistics
+ * and supporting AJAX functionality with proper session handling.
+ */
+class Api implements App
+{
+    /**
+     * Execute the API request handling
+     *
+     * Routes requests to appropriate handlers based on URL path
+     * and returns JSON responses with proper HTTP status codes.
+     *
+     * @return void
+     */
+    public function run(): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
-if (count($pathParts) >= 2 && $pathParts[0] === 'api' && $pathParts[1] === 'stats') {
-    try {
-        $sessionId = session_id();
+        // Set JSON header
+        header('Content-Type: application/json');
 
-        // Get total count
-        $totalCount = $db->query('SELECT COUNT(*) FROM zaznamy')->fetchSingle();
+        // Get database connection
+        $db = DbConfig::getDbConnection();
 
-        // Get marked count from database (same as table page)
-        $markedCount = $db->query('
-            SELECT COUNT(DISTINCT zaznam_id)
-            FROM `marked_records`
-            WHERE session_id = %s', $sessionId)->fetchSingle();
+        // Get the requested action from URL
+        $path = $_SERVER['REQUEST_URI'];
+        $pathParts = explode('/', trim($path, '/'));
 
-        // Calculate percentage
-        $percentage = $totalCount > 0 ? round(($markedCount / $totalCount) * 100) : 0;
+        if (count($pathParts) >= 2 && $pathParts[0] === 'api' && $pathParts[1] === 'stats') {
+            try {
+                $sessionId = session_id();
 
-        echo json_encode([
-            'success' => true,
-            'total' => (int)$totalCount,
-            'marked' => (int)$markedCount,
-            'percentage' => (int)$percentage
-        ]);
+                // Get total count
+                $totalCount = $db->query('SELECT COUNT(*) FROM zaznamy')->fetchSingle();
 
-    } catch (Exception $e) {
-        http_response_code(500);
-        echo json_encode([
-            'success' => false,
-            'message' => 'Error fetching statistics'
-        ]);
+                // Get marked count from database (same as table page)
+                $markedCount = $db->query('
+                    SELECT COUNT(DISTINCT zaznam_id)
+                    FROM `marked_records`
+                    WHERE session_id = %s', $sessionId)->fetchSingle();
+
+                // Calculate percentage
+                $percentage = $totalCount > 0 ? round(($markedCount / $totalCount) * 100) : 0;
+
+                echo json_encode([
+                    'success' => true,
+                    'total' => (int)$totalCount,
+                    'marked' => (int)$markedCount,
+                    'percentage' => (int)$percentage
+                ]);
+
+            } catch (Exception $e) {
+                http_response_code(500);
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Error fetching statistics'
+                ]);
+            }
+        } else {
+            http_response_code(404);
+            echo json_encode([
+                'success' => false,
+                'message' => 'API endpoint not found'
+            ]);
+        }
     }
-} else {
-    http_response_code(404);
-    echo json_encode([
-        'success' => false,
-        'message' => 'API endpoint not found'
-    ]);
 }

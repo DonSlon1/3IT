@@ -1,9 +1,5 @@
 <?php namespace app;
 
-use DbConfig;
-use dibi;
-
-require_once __DIR__ . '/ErrorHandler.php';
 
 class Export implements App
 {
@@ -19,7 +15,7 @@ class Export implements App
             DbConfig::getDbConnection();
 
             // Get all records
-            $records = dibi::query('SELECT * FROM `zaznamy` ORDER BY datum DESC')->fetchAll();
+            $records = \dibi::query('SELECT * FROM `zaznamy` ORDER BY datum DESC')->fetchAll();
 
             $filename = 'data_export_' . date('Y-m-d_H-i-s') . '.' . $format;
 

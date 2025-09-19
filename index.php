@@ -1,22 +1,21 @@
 <?php
 
 use app\App;
-use app\Tabulka;
+use app\DbConfig;
+use app\Latte;
+use app\ErrorHandler;
 use Tracy\Debugger;
 
 require_once 'vendor/autoload.php';
 
 Debugger::enable(Debugger::Production, __DIR__ .'/zeta/logs/');
 
-require_once 'DbConfig.php';
-require_once 'Latte.php';
-require_once 'app/ErrorHandler.php';
-
 $urlPath = trim(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH), '/');
 
 // Handle API routes
 if (strpos($urlPath, 'api/') === 0) {
-   require_once 'app/Api.php';
+   $api = new \app\Api();
+   $api->run();
    exit;
 }
 
@@ -24,7 +23,9 @@ if (strpos($urlPath, 'api/') === 0) {
 if (empty($urlPath)) {
    $className = 'app\Home';
 } else {
-   $className = 'app\\' . ucfirst($urlPath);
+   // For simple page routing, get first part of URL
+   $pageName = explode('/', $urlPath)[0];
+   $className = 'app\\' . ucfirst($pageName);
 }
 
 // Validate class exists and implements App interface
@@ -41,7 +42,7 @@ try {
 
    // Simple error page if ErrorHandler fails
    if (class_exists('app\ErrorHandler')) {
-      app\ErrorHandler::handleException($e);
+      ErrorHandler::handleException($e);
    } else {
       echo '<h1>Server Error</h1><p>An error occurred. Please try again later.</p>';
       if (!Debugger::$productionMode) {

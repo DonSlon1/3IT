@@ -1,7 +1,5 @@
 <?php namespace app;
 
-use DbConfig;
-use dibi;
 
 class Mark implements App
 {
@@ -26,7 +24,7 @@ class Mark implements App
             DbConfig::getDbConnection();
 
             // Verify record exists
-            $exists = dibi::query('SELECT id FROM `zaznamy` WHERE id = %i', $recordId)->fetch();
+            $exists = \dibi::query('SELECT id FROM `zaznamy` WHERE id = %i', $recordId)->fetch();
             if (!$exists) {
                 throw new \Exception('Record not found');
             }
@@ -39,13 +37,13 @@ class Mark implements App
 
             if ($marked) {
                 // Add mark
-                dibi::query('INSERT IGNORE INTO `marked_records`', [
+                \dibi::query('INSERT IGNORE INTO `marked_records`', [
                     'zaznam_id' => $recordId,
                     'session_id' => $sessionId
                 ]);
             } else {
                 // Remove mark
-                dibi::query('DELETE FROM `marked_records`
+                \dibi::query('DELETE FROM `marked_records`
                     WHERE zaznam_id = %i AND session_id = %s',
                     $recordId, $sessionId);
             }
