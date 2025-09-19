@@ -12,10 +12,18 @@ require_once 'DbConfig.php';
 require_once 'Latte.php';
 
 $urlPath = trim(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH), '/');
-$className = $urlPath ? 'app\\' . ucfirst($urlPath) : Tabulka::class;
 
+// Default to Home page
+if (empty($urlPath)) {
+   $className = app\Home::class;
+} else {
+   $className = 'app\\' . ucfirst($urlPath);
+}
+
+// Validate class exists and implements App interface
 if (!class_exists($className) || !is_a($className, App::class, true)) {
-   $className = Tabulka::class;
+   // Fall back to Home for invalid routes
+   $className = app\Home::class;
 }
 
 $app = new $className();

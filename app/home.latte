@@ -1,0 +1,154 @@
+{layout 'layout.latte'}
+{block body}
+   <div class="container">
+      <div class="welcome">
+         <h1>Správa záznamů</h1>
+         <p class="lead">Aplikace pro import a správu databázových záznamů</p>
+      </div>
+
+      <div class="features">
+         <div class="feature-card">
+            <div class="feature-icon">📥</div>
+            <h3>Import dat</h3>
+            <p>Stažení dat ze vzdáleného JSON zdroje a jejich uložení do databáze</p>
+            <a href="/download" class="btn btn-primary">Importovat data</a>
+         </div>
+
+         <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Zobrazení dat</h3>
+            <p>Strukturované zobrazení všech záznamů s možností řazení</p>
+            <a href="/tabulka" class="btn btn-primary">Zobrazit tabulku</a>
+         </div>
+
+         <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Označování záznamů</h3>
+            <p>Možnost označit libovolné záznamy pro další zpracování</p>
+            <a href="/tabulka" class="btn btn-primary">Označit záznamy</a>
+         </div>
+      </div>
+
+      <div class="info">
+         <h2>Funkce aplikace</h2>
+         <ul>
+            <li>✅ Bezpečný import dat s validací</li>
+            <li>✅ Ochrana proti SQL injection</li>
+            <li>✅ Prevence duplicitních záznamů</li>
+            <li>✅ Interaktivní řazení podle sloupců</li>
+            <li>✅ Perzistentní ukládání označení</li>
+            <li>✅ Responzivní design</li>
+            <li>✅ AJAX operace pro lepší UX</li>
+         </ul>
+      </div>
+   </div>
+
+   <style>
+      body {
+         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         margin: 0;
+         padding: 20px;
+         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+         min-height: 100vh;
+      }
+
+      .container {
+         max-width: 1200px;
+         margin: 0 auto;
+      }
+
+      .welcome {
+         text-align: center;
+         color: white;
+         padding: 40px 0;
+      }
+
+      .welcome h1 {
+         font-size: 48px;
+         margin-bottom: 10px;
+         text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      }
+
+      .lead {
+         font-size: 20px;
+         opacity: 0.95;
+      }
+
+      .features {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+         gap: 30px;
+         margin: 40px 0;
+      }
+
+      .feature-card {
+         background: white;
+         padding: 30px;
+         border-radius: 12px;
+         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+         text-align: center;
+         transition: transform 0.3s;
+      }
+
+      .feature-card:hover {
+         transform: translateY(-5px);
+         box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      }
+
+      .feature-icon {
+         font-size: 48px;
+         margin-bottom: 20px;
+      }
+
+      .feature-card h3 {
+         color: #333;
+         margin-bottom: 15px;
+      }
+
+      .feature-card p {
+         color: #666;
+         margin-bottom: 25px;
+         line-height: 1.6;
+      }
+
+      .btn {
+         display: inline-block;
+         padding: 12px 30px;
+         background-color: #c91834;
+         color: white;
+         text-decoration: none;
+         border-radius: 6px;
+         transition: background-color 0.3s;
+         font-weight: 500;
+      }
+
+      .btn:hover {
+         background-color: #a01228;
+      }
+
+      .info {
+         background: white;
+         padding: 40px;
+         border-radius: 12px;
+         margin-top: 40px;
+         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      }
+
+      .info h2 {
+         color: #333;
+         margin-bottom: 20px;
+      }
+
+      .info ul {
+         list-style: none;
+         padding: 0;
+      }
+
+      .info li {
+         padding: 10px 0;
+         color: #555;
+         font-size: 16px;
+         line-height: 1.6;
+      }
+   </style>
+{/block}
