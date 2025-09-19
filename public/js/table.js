@@ -90,9 +90,6 @@ $(document).ready(function() {
 
    // Clear all marks functionality
    $('#clearMarks').off('click').on('click', function() {
-      if (!confirm('Are you sure you want to clear all selections?')) {
-         return;
-      }
 
       const $markedRows = $('tbody tr.row-marked');
       console.log('Clearing', $markedRows.length, 'marked rows');
