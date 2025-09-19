@@ -106,24 +106,27 @@ const app = createApp({
     },
 
     clearAllMarks() {
-      if (!confirm('Opravdu chcete zrušit všechna označení?')) {
+      if (!confirm('Are you sure you want to clear all selections?')) {
         return;
       }
 
       this.loading = true;
-      const markedRows = document.querySelectorAll('tr.marked');
+      const markedRows = document.querySelectorAll('tr.row-marked');
 
       Promise.all(Array.from(markedRows).map(row => {
         const id = row.dataset.id;
         return this.markRecord(id, false);
       }))
       .then(() => {
-        markedRows.forEach(row => row.classList.remove('marked'));
+        markedRows.forEach(row => {
+          row.classList.remove('row-marked');
+          updateStatusBadge($(row), false);
+        });
         this.stats.markedRecords = 0;
-        this.showNotification('Všechna označení byla zrušena', 'success');
+        this.showNotification('All selections cleared', 'success');
       })
       .catch(error => {
-        this.showNotification('Chyba při rušení označení', 'error');
+        this.showNotification('Error clearing selections', 'error');
       })
       .finally(() => {
         this.loading = false;
@@ -179,13 +182,14 @@ $(document).ready(function() {
   $('tbody tr').on('click', function() {
     const $row = $(this);
     const rowId = parseInt($row.data('id'));
-    const isMarked = $row.hasClass('marked');
+    const isMarked = $row.hasClass('row-marked');
 
     // Use Vue method if available
     if (window.Vue && app) {
       app.markRecord(rowId, !isMarked)
         .then(() => {
-          $row.toggleClass('marked');
+          $row.toggleClass('row-marked');
+          updateStatusBadge($row, !isMarked);
         })
         .catch(() => {
           // Handle error - Vue will show notification
@@ -202,7 +206,8 @@ $(document).ready(function() {
         }),
         success: function(response) {
           if (response.success) {
-            $row.toggleClass('marked');
+            $row.toggleClass('row-marked');
+            updateStatusBadge($row, response.marked);
 
             // Update counter
             const counter = $('#markedCount');
@@ -212,7 +217,7 @@ $(document).ready(function() {
           }
         },
         error: function() {
-          alert('Chyba při označování záznamu');
+          alert('Error marking record');
         }
       });
     }
@@ -246,6 +251,16 @@ $(document).ready(function() {
     }
   );
 });
+
+// Function to update status badge
+function updateStatusBadge($row, isMarked) {
+  const statusCell = $row.find('td:last-child');
+  if (isMarked) {
+    statusCell.html('<span class="badge badge-success" title="Selected">SELECTED</span>');
+  } else {
+    statusCell.html('<span class="badge badge-secondary" title="Not selected">NORMAL</span>');
+  }
+}
 
 // Global utilities
 window.AppUtils = {
